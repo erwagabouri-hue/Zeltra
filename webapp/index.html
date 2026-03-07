@@ -65,8 +65,8 @@ left:0;
 }
 
 .logo{
-width:340px;
-opacity:0.08;
+width:350px;
+opacity:0.07;
 position:fixed;
 top:50%;
 left:50%;
@@ -76,25 +76,34 @@ z-index:0;
 }
 
 .container{
-padding:40px 20px;
-max-width:520px;
-margin:auto;
+
+min-height:calc(100vh - 60px);
+
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
+
 text-align:center;
+
+padding:40px 20px;
+max-width:600px;
+margin:auto;
+
 position:relative;
 z-index:1;
+
 }
 
 h1{
-margin-top:10px;
+font-size:34px;
+margin-bottom:10px;
 }
 
 p{
 opacity:0.85;
-line-height:1.5;
+line-height:1.6;
+max-width:500px;
 }
 
 .category{
@@ -108,7 +117,7 @@ width:100%;
 button{
 background:#28a745;
 border:none;
-padding:12px 20px;
+padding:12px 22px;
 border-radius:10px;
 color:white;
 font-size:16px;
@@ -188,13 +197,14 @@ sidebar.classList.toggle("open");
 function showPage(page){
 
 const content = document.getElementById("content");
+
 toggleMenu();
 
 if(page === "home"){
 
 content.innerHTML = `
 
-<h1>ZELTRAMARKET</h1>
+<h1>Bienvenue sur ZELTRAMARKET</h1>
 
 <p>
 La première plateforme française de pronostics sur des événements réels.
@@ -236,7 +246,7 @@ content.innerHTML = `
 <h2>Acheter du ZELTRA</h2>
 
 <p>
-La fonctionnalité sera bientôt disponible.
+Fonctionnalité bientôt disponible.
 </p>
 
 `;
@@ -250,8 +260,7 @@ content.innerHTML = `
 <h2>Proposer un pari</h2>
 
 <p>
-Vous avez une idée de pronostic ?
-Envoyez-la à notre équipe.
+Vous avez une idée de pronostic ? Envoyez-la à notre équipe.
 </p>
 
 <textarea id="ideaText" placeholder="Votre idée de pari..."></textarea>
@@ -268,9 +277,7 @@ content.innerHTML = `
 
 <h2>Contact</h2>
 
-<p>
-Suivez-nous sur Instagram
-</p>
+<p>Suivez-nous sur Instagram</p>
 
 <a href="https://www.instagram.com/la_prediction777" target="_blank">
 
