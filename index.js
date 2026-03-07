@@ -1,82 +1,18 @@
-/**
- * ZELTRAMARKET Telegram Bot
- * Plateforme de pronostics sur des faits réels
- * Mises réalisées en jeton ZELTRA
- */
+const TelegramBot = require("node-telegram-bot-api")
 
-const TelegramBot = require("node-telegram-bot-api");
+const token = process.env.BOT_TOKEN
 
-// =========================
-// CONFIGURATION
-// =========================
+const bot = new TelegramBot(token, { polling: true })
 
-const BOT_TOKEN = process.env.BOT_TOKEN;
-
-if (!BOT_TOKEN) {
-  console.error("❌ BOT_TOKEN manquant dans les variables d'environnement.");
-  process.exit(1);
-}
-
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
-
-// =========================
-// BASE DE DONNÉES SIMPLE (MVP)
-// =========================
-
-const users = {};
-const markets = [
-  {
-    id: 1,
-    question: "Le Bitcoin dépassera-t-il 100 000$ avant 2027 ?",
-    yes: 0,
-    no: 0,
-    status: "open"
-  },
-  {
-    id: 2,
-    question: "L'équipe de France gagnera-t-elle son prochain match ?",
-    yes: 0,
-    no: 0,
-    status: "open"
-  }
-];
-
-// =========================
-// UTILITAIRES
-// =========================
-
-function getUser(userId) {
-  if (!users[userId]) {
-    users[userId] = {
-      balance: 1000,
-      bets: []
-    };
-  }
-  return users[userId];
-}
-
-function mainMenu() {
-  return {
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: "📊 Voir les pronostics", callback_data: "markets" }],
-        [{ text: "💰 Mon solde", callback_data: "balance" }],
-        [{ text: "📜 Mes paris", callback_data: "bets" }],
-        [{ text: "📩 Nous contacter", url: "https://t.me/tonusername" }]
-      ]
-    }
-  };
-}
-
-// =========================
-// COMMANDE START
-// =========================
+// ===============================
+// MESSAGE START
+// ===============================
 
 bot.onText(/\/start/, (msg) => {
 
-  const chatId = msg.chat.id;
+const chatId = msg.chat.id
 
-  const welcome = `
+const welcome = `
 🚀 Bienvenue sur ZELTRAMARKET
 
 ZeltraMarket est la première plateforme française de pronostics sur des faits réels et quotidiens.
@@ -93,147 +29,184 @@ Chaque jour, de nouvelles prédictions sont disponibles :
 Choisissez votre prédiction, placez votre mise et suivez les résultats en temps réel.
 
 Bonne chance 🍀
-`;
+`
 
-  bot.sendMessage(chatId, welcome, mainMenu());
-});
+bot.sendMessage(chatId, welcome, {
+reply_markup: {
+inline_keyboard: [
 
-// =========================
+[{ text: "📊 Voir les pronostics", callback_data: "categories" }],
+
+[{ text: "💰 Mon solde", callback_data: "balance" }],
+
+[{ text: "📩 Nous contacter", url: "https://t.me/tonusername" }]
+
+]
+}
+})
+
+})
+
+// ===============================
 // CALLBACK MENU
-// =========================
+// ===============================
 
 bot.on("callback_query", (query) => {
 
-  const chatId = query.message.chat.id;
-  const userId = query.from.id;
-  const data = query.data;
+const chatId = query.message.chat.id
+const data = query.data
 
-  const user = getUser(userId);
+// ===============================
+// CATEGORIES
+// ===============================
 
-  // =====================
-  // VOIR LES PRONOSTICS
-  // =====================
+if (data === "categories") {
 
-  if (data === "markets") {
+bot.sendMessage(chatId,
+"📊 Choisissez une catégorie de pronostics :",
+{
+reply_markup: {
+inline_keyboard: [
 
-    markets.forEach((market) => {
+[{ text: "⚽ Sport", callback_data: "sport" }],
 
-      if (market.status !== "open") return;
+[{ text: "🎬 Divertissement", callback_data: "entertainment" }],
 
-      bot.sendMessage(chatId,
-        `📊 Pronostic #${market.id}\n\n${market.question}\n\n🟢 Oui : ${market.yes}\n🔴 Non : ${market.no}`,
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [
-                { text: "🟢 Parier OUI", callback_data: `bet_yes_${market.id}` },
-                { text: "🔴 Parier NON", callback_data: `bet_no_${market.id}` }
-              ]
-            ]
-          }
-        }
-      );
+[{ text: "🌐 Web", callback_data: "web" }],
 
-    });
+[{ text: "🏛 Politique", callback_data: "politics" }],
 
-  }
+[{ text: "🎮 Gaming", callback_data: "gaming" }],
 
-  // =====================
-  // SOLDE
-  // =====================
+[{ text: "⬅ Retour", callback_data: "menu" }]
 
-  if (data === "balance") {
+]
+}
+})
 
-    bot.sendMessage(chatId,
-      `💰 Votre solde : ${user.balance} ZELTRA`
-    );
+}
 
-  }
+// ===============================
+// SPORT
+// ===============================
 
-  // =====================
-  // HISTORIQUE DES PARIS
-  // =====================
+if (data === "sport") {
 
-  if (data === "bets") {
+bot.sendMessage(chatId,
+`⚽ Pronostics Sport
 
-    if (user.bets.length === 0) {
+Exemple :
 
-      bot.sendMessage(chatId,
-        "📜 Vous n'avez encore placé aucun pari."
-      );
+Le PSG gagnera-t-il son prochain match ?
 
-      return;
-    }
+🟢 Oui
+🔴 Non`
+)
 
-    let message = "📜 Vos paris :\n\n";
+}
 
-    user.bets.forEach((bet) => {
+// ===============================
+// DIVERTISSEMENT
+// ===============================
 
-      message += `Pronostic ${bet.marketId} → ${bet.choice} (${bet.amount} ZELTRA)\n`;
+if (data === "entertainment") {
 
-    });
+bot.sendMessage(chatId,
+`🎬 Pronostics Divertissement
 
-    bot.sendMessage(chatId, message);
+Exemple :
 
-  }
+Ce film dépassera-t-il 500M$ au box office ?`
+)
 
-  // =====================
-  // PARIER
-  // =====================
+}
 
-  if (data.startsWith("bet_yes_") || data.startsWith("bet_no_")) {
+// ===============================
+// WEB
+// ===============================
 
-    const parts = data.split("_");
-    const choice = parts[1];
-    const marketId = parseInt(parts[2]);
+if (data === "web") {
 
-    const market = markets.find(m => m.id === marketId);
+bot.sendMessage(chatId,
+`🌐 Pronostics Web
 
-    if (!market) {
-      bot.sendMessage(chatId, "❌ Pronostic introuvable.");
-      return;
-    }
+Exemple :
 
-    const betAmount = 100;
+Cette startup atteindra-t-elle 1M d'utilisateurs ?`
+)
 
-    if (user.balance < betAmount) {
-      bot.sendMessage(chatId, "❌ Solde insuffisant.");
-      return;
-    }
+}
 
-    user.balance -= betAmount;
+// ===============================
+// POLITIQUE
+// ===============================
 
-    user.bets.push({
-      marketId,
-      choice,
-      amount: betAmount
-    });
+if (data === "politics") {
 
-    if (choice === "yes") market.yes += betAmount;
-    if (choice === "no") market.no += betAmount;
+bot.sendMessage(chatId,
+`🏛 Pronostics Politique
 
-    bot.sendMessage(chatId,
-      `✅ Pari enregistré !
+Exemple :
 
-📊 Pronostic : ${market.question}
-🎯 Choix : ${choice.toUpperCase()}
-💰 Mise : ${betAmount} ZELTRA
+Ce candidat remportera-t-il l'élection ?`
+)
 
-Nouveau solde : ${user.balance} ZELTRA`
-    );
+}
 
-  }
+// ===============================
+// GAMING
+// ===============================
 
-  bot.answerCallbackQuery(query.id);
+if (data === "gaming") {
 
-});
+bot.sendMessage(chatId,
+`🎮 Pronostics Gaming
 
-// =========================
-// GESTION ERREURS
-// =========================
+Exemple :
 
-bot.on("polling_error", (error) => {
-  console.error("Polling error:", error);
-});
+Ce jeu dépassera-t-il 10M de ventes ?`
+)
 
-console.log("🚀 ZeltraMarket bot lancé");
+}
+
+// ===============================
+// SOLDE
+// ===============================
+
+if (data === "balance") {
+
+bot.sendMessage(chatId,
+"💰 Votre solde ZELTRA sera bientôt disponible."
+)
+
+}
+
+// ===============================
+// RETOUR MENU
+// ===============================
+
+if (data === "menu") {
+
+bot.sendMessage(chatId,
+"🏠 Menu principal",
+{
+reply_markup: {
+inline_keyboard: [
+
+[{ text: "📊 Voir les pronostics", callback_data: "categories" }],
+
+[{ text: "💰 Mon solde", callback_data: "balance" }],
+
+[{ text: "📩 Nous contacter", url: "https://t.me/tonusername" }]
+
+]
+}
+})
+
+}
+
+bot.answerCallbackQuery(query.id)
+
+})
+
+console.log("ZELTRAMARKET bot lancé 🚀")
