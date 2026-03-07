@@ -7,27 +7,21 @@ const bot = new TelegramBot(token, { polling: true });
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 const WEBAPP_URL = "https://zeltra-47xg5qhmc-erwagabouri-hues-projects.vercel.app/";
 
 
-// =======================
-// SERVER POUR RENDER
-// =======================
-
-const PORT = process.env.PORT || 3000;
-
 app.get("/", (req, res) => {
-res.send("ZeltraMarket Bot is running 🚀");
+res.send("ZeltraMarket bot running 🚀");
 });
 
 app.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`);
+console.log("Server running on port " + PORT);
 });
 
 
-// =======================
-// START COMMAND
-// =======================
+// START
 
 bot.onText(/\/start/, (msg) => {
 
@@ -38,16 +32,9 @@ const welcome = `
 
 ZeltraMarket est la première plateforme française de pronostics sur des faits réels et quotidiens.
 
-Chaque jour, de nouvelles prédictions sont disponibles :
+Toutes les mises sont réalisées avec le jeton ZELTRA.
 
-📊 Actualité
-⚽ Sport
-🌍 Événements mondiaux
-📈 Crypto et marchés
-
-🪙 Toutes les mises sont réalisées avec le jeton ZELTRA.
-
-Bonne chance 🍀
+Cliquez ci-dessous pour ouvrir la plateforme.
 `;
 
 bot.sendMessage(chatId, welcome, {
@@ -58,16 +45,10 @@ inline_keyboard: [
 
 [
 {
-text:"📱 Ouvrir ZeltraMarket",
-web_app:{url:WEBAPP_URL}
+text: "📱 Ouvrir la plateforme Zeltra",
+web_app: { url: WEBAPP_URL }
 }
-],
-
-[{text:"📊 Voir les pronostics",callback_data:"categories"}],
-
-[{text:"💰 Mon solde",callback_data:"balance"}],
-
-[{text:"📩 Nous contacter",url:"https://t.me/tonusername"}]
+]
 
 ]
 
@@ -77,48 +58,4 @@ web_app:{url:WEBAPP_URL}
 
 });
 
-
-// =======================
-// CALLBACK
-// =======================
-
-bot.on("callback_query",(query)=>{
-
-const chatId=query.message.chat.id;
-const data=query.data;
-
-if(data==="categories"){
-
-bot.sendMessage(chatId,"📊 Choisissez une catégorie :",{
-
-reply_markup:{
-inline_keyboard:[
-
-[{text:"⚽ Sport",callback_data:"sport"}],
-
-[{text:"🎬 Divertissement",callback_data:"entertainment"}],
-
-[{text:"🌐 Web",callback_data:"web"}],
-
-[{text:"🏛 Politique",callback_data:"politics"}],
-
-[{text:"🎮 Gaming",callback_data:"gaming"}]
-
-]
-}
-
-});
-
-}
-
-if(data==="balance"){
-
-bot.sendMessage(chatId,"💰 Fonction bientôt disponible");
-
-}
-
-bot.answerCallbackQuery(query.id);
-
-});
-
-console.log("ZeltraMarket bot running 🚀");
+console.log("ZeltraMarket bot launched 🚀");
