@@ -18,14 +18,18 @@ text-align:center;
 padding:20px;
 }
 
-button{
-padding:15px;
-margin:10px;
-font-size:18px;
-border-radius:10px;
+.menu button{
+padding:12px;
+margin:6px;
+font-size:16px;
 border:none;
-background:#4CAF50;
+border-radius:8px;
+background:#2ecc71;
 color:white;
+}
+
+.section{
+margin-top:25px;
 }
 
 </style>
@@ -36,7 +40,16 @@ color:white;
 
 <h1>🚀 ZELTRAMARKET</h1>
 
-<p>Plateforme de pronostics</p>
+<div class="menu">
+
+<button onclick="show('categories')">📊 Pronostics</button>
+
+<button onclick="show('balance')">💰 Mon solde</button>
+
+</div>
+
+
+<div id="categories" class="section" style="display:none;">
 
 <h2>Catégories</h2>
 
@@ -46,13 +59,30 @@ color:white;
 <button>🏛 Politique</button>
 <button>🎮 Gaming</button>
 
-<h2>Pronostic</h2>
+</div>
 
-<p>Bitcoin dépassera-t-il 100k avant 2027 ?</p>
 
-<button>🟢 OUI</button>
-<button>🔴 NON</button>
+<div id="balance" class="section" style="display:none;">
+
+<h2>💰 Solde ZELTRA</h2>
+
+<p>Votre solde : 0 ZELTRA</p>
+
+</div>
+
+
+<script>
+
+function show(section){
+
+document.getElementById("categories").style.display="none";
+document.getElementById("balance").style.display="none";
+
+document.getElementById(section).style.display="block";
+
+}
+
+</script>
 
 </body>
-
 </html>
