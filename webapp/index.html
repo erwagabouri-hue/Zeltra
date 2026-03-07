@@ -68,20 +68,13 @@ left:0;
 padding:20px;
 }
 
-.card{
-background:#1a1a1a;
-padding:15px;
-border-radius:10px;
-margin-bottom:15px;
-}
-
 .category{
 background:#1f1f1f;
 padding:14px;
 border-radius:10px;
 margin:10px 0;
-cursor:pointer;
 text-align:center;
+cursor:pointer;
 }
 
 .user{
@@ -99,13 +92,9 @@ color:#aaa;
 <div class="sidebar" id="sidebar">
 
 <a onclick="showPage('home')">🏠 Accueil</a>
-
 <a onclick="showPage('pronostics')">📊 Pronostics</a>
-
 <a onclick="showPage('buy')">💰 Acheter du ZELTRA</a>
-
 <a onclick="showPage('idea')">💡 Proposer un pari</a>
-
 <a onclick="showPage('contact')">✉️ Contact</a>
 
 </div>
@@ -122,20 +111,7 @@ color:#aaa;
 
 <h2>Bienvenue</h2>
 
-<p>ZeltraMarket est la première plateforme française de pronostics sur des faits réels et quotidiens.</p>
-
-<p>Pariez sur :</p>
-
-<ul>
-<li>Sport</li>
-<li>Politique</li>
-<li>Web</li>
-<li>Crypto</li>
-<li>Actualités</li>
-<li>Gaming</li>
-</ul>
-
-<p>Toutes les mises sont réalisées avec le jeton <b>ZELTRA</b>.</p>
+<p>ZeltraMarket est la première plateforme française de pronostics sur des faits réels.</p>
 
 <div id="userInfo" class="user"></div>
 
@@ -147,8 +123,6 @@ const tg = window.Telegram.WebApp;
 
 tg.expand();
 
-/* connexion automatique Telegram */
-
 const user = tg.initDataUnsafe.user;
 
 if(user){
@@ -156,11 +130,7 @@ if(user){
 document.getElementById("userInfo").innerHTML =
 "Connecté en tant que : " + user.first_name;
 
-console.log("Utilisateur Telegram :", user);
-
 }
-
-/* menu */
 
 function toggleMenu(){
 
@@ -169,8 +139,6 @@ const sidebar = document.getElementById("sidebar");
 sidebar.classList.toggle("open");
 
 }
-
-/* navigation */
 
 function showPage(page){
 
@@ -182,8 +150,7 @@ if(page === "home"){
 
 content.innerHTML = `
 <h2>Bienvenue</h2>
-<p>ZeltraMarket est la première plateforme française de pronostics.</p>
-<p>Toutes les mises utilisent le jeton <b>ZELTRA</b>.</p>
+<p>Plateforme de pronostics Zeltra.</p>
 `;
 
 }
@@ -207,9 +174,7 @@ if(page === "buy"){
 
 content.innerHTML = `
 <h2>Acheter du ZELTRA</h2>
-<div class="card">
-Bientôt disponible.
-</div>
+<p>Bientôt disponible.</p>
 `;
 
 }
@@ -218,9 +183,7 @@ if(page === "idea"){
 
 content.innerHTML = `
 <h2>Proposer un pari</h2>
-<div class="card">
-Envoyez vos idées de paris à l'équipe Zeltra.
-</div>
+<p>Envoyez vos idées à l'équipe Zeltra.</p>
 `;
 
 }
@@ -229,9 +192,7 @@ if(page === "contact"){
 
 content.innerHTML = `
 <h2>Contact</h2>
-<div class="card">
-Telegram : @zeltramarket
-</div>
+<p>Telegram : @zeltramarket</p>
 `;
 
 }
