@@ -1,5 +1,5 @@
 {
-  "name": "zeltra-bot",
+  "name": "zeltramarket-bot",
   "version": "1.0.0",
   "description": "ZeltraMarket Telegram bot",
   "main": "index.js",
