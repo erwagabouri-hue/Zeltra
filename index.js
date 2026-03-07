@@ -1,15 +1,33 @@
 const TelegramBot = require("node-telegram-bot-api");
+const express = require("express");
 
 const token = process.env.BOT_TOKEN;
 
 const bot = new TelegramBot(token, { polling: true });
 
+const app = express();
+
 const WEBAPP_URL = "https://zeltra-47xg5qhmc-erwagabouri-hues-projects.vercel.app/";
 
 
-// =========================
-// START
-// =========================
+// =======================
+// SERVER POUR RENDER
+// =======================
+
+const PORT = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+res.send("ZeltraMarket Bot is running 🚀");
+});
+
+app.listen(PORT, () => {
+console.log(`Server running on port ${PORT}`);
+});
+
+
+// =======================
+// START COMMAND
+// =======================
 
 bot.onText(/\/start/, (msg) => {
 
@@ -29,8 +47,6 @@ Chaque jour, de nouvelles prédictions sont disponibles :
 
 🪙 Toutes les mises sont réalisées avec le jeton ZELTRA.
 
-Choisissez votre prédiction, placez votre mise et suivez les résultats en temps réel.
-
 Bonne chance 🍀
 `;
 
@@ -42,22 +58,16 @@ inline_keyboard: [
 
 [
 {
-text: "📱 Ouvrir la plateforme Zeltra",
-web_app: { url: WEBAPP_URL }
+text:"📱 Ouvrir ZeltraMarket",
+web_app:{url:WEBAPP_URL}
 }
 ],
 
-[
-{ text: "📊 Pronostics", callback_data: "categories" }
-],
+[{text:"📊 Voir les pronostics",callback_data:"categories"}],
 
-[
-{ text: "💰 Mon solde", callback_data: "balance" }
-],
+[{text:"💰 Mon solde",callback_data:"balance"}],
 
-[
-{ text: "📩 Nous contacter", url: "https://t.me/tonusername" }
-]
+[{text:"📩 Nous contacter",url:"https://t.me/tonusername"}]
 
 ]
 
@@ -68,92 +78,42 @@ web_app: { url: WEBAPP_URL }
 });
 
 
-// =========================
+// =======================
 // CALLBACK
-// =========================
+// =======================
 
-bot.on("callback_query", (query) => {
+bot.on("callback_query",(query)=>{
 
-const chatId = query.message.chat.id;
-const data = query.data;
+const chatId=query.message.chat.id;
+const data=query.data;
 
+if(data==="categories"){
 
-// =========================
-// CATEGORIES
-// =========================
+bot.sendMessage(chatId,"📊 Choisissez une catégorie :",{
 
-if (data === "categories") {
+reply_markup:{
+inline_keyboard:[
 
-bot.sendMessage(chatId, "📊 Choisissez une catégorie :", {
+[{text:"⚽ Sport",callback_data:"sport"}],
 
-reply_markup: {
+[{text:"🎬 Divertissement",callback_data:"entertainment"}],
 
-inline_keyboard: [
+[{text:"🌐 Web",callback_data:"web"}],
 
-[{ text: "⚽ Sport", callback_data: "sport" }],
+[{text:"🏛 Politique",callback_data:"politics"}],
 
-[{ text: "🎬 Divertissement", callback_data: "entertainment" }],
-
-[{ text: "🌐 Web", callback_data: "web" }],
-
-[{ text: "🏛 Politique", callback_data: "politics" }],
-
-[{ text: "🎮 Gaming", callback_data: "gaming" }],
-
-[{ text: "⬅ Retour", callback_data: "menu" }]
+[{text:"🎮 Gaming",callback_data:"gaming"}]
 
 ]
-
 }
 
 });
 
 }
 
+if(data==="balance"){
 
-// =========================
-// SOLDE
-// =========================
-
-if (data === "balance") {
-
-bot.sendMessage(chatId, "💰 Votre solde ZELTRA sera bientôt disponible.");
-
-}
-
-
-// =========================
-// MENU
-// =========================
-
-if (data === "menu") {
-
-bot.sendMessage(chatId, "🏠 Menu principal", {
-
-reply_markup: {
-
-inline_keyboard: [
-
-[
-{
-text: "📱 Ouvrir la plateforme Zeltra",
-web_app: { url: WEBAPP_URL }
-}
-],
-
-[
-{ text: "📊 Pronostics", callback_data: "categories" }
-],
-
-[
-{ text: "💰 Mon solde", callback_data: "balance" }
-]
-
-]
-
-}
-
-});
+bot.sendMessage(chatId,"💰 Fonction bientôt disponible");
 
 }
 
@@ -161,5 +121,4 @@ bot.answerCallbackQuery(query.id);
 
 });
 
-
-console.log("🚀 ZeltraMarket bot lancé");
+console.log("ZeltraMarket bot running 🚀");
