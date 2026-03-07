@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ZeltraMarket</title>
+<title>ZELTRAMARKET</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 
 body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
 background:#0f0f0f;
 color:white;
-font-family:Arial;
-margin:0;
 }
 
 header{
@@ -23,80 +24,70 @@ display:flex;
 align-items:center;
 padding:15px;
 background:#111;
+border-bottom:1px solid #222;
 }
 
-.menu-btn{
-font-size:22px;
+.menu{
+font-size:24px;
 cursor:pointer;
 margin-right:15px;
 }
 
-h1{
-font-size:18px;
-margin:0;
+.title{
+font-weight:bold;
 }
-
-.container{
-padding:20px;
-}
-
-button{
-background:#1c1c1c;
-color:white;
-border:none;
-padding:12px;
-margin:6px;
-border-radius:8px;
-cursor:pointer;
-}
-
-.categories button{
-display:block;
-width:100%;
-margin-bottom:10px;
-}
-
-/* menu */
 
 .sidebar{
-
 position:fixed;
 top:0;
 left:-260px;
 width:260px;
 height:100%;
-background:#151515;
+background:#111;
 padding:20px;
 transition:0.3s;
-
+z-index:1000;
 }
 
 .sidebar a{
 display:block;
-color:white;
+padding:12px;
+margin:10px 0;
+background:#1a1a1a;
+border-radius:8px;
 text-decoration:none;
-margin:15px 0;
-font-size:16px;
+color:white;
+cursor:pointer;
 }
 
 .sidebar.open{
 left:0;
 }
 
-.overlay{
-
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-display:none;
-
+.container{
+padding:20px;
 }
 
-.overlay.show{
-display:block;
+.card{
+background:#1a1a1a;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+.category{
+background:#1f1f1f;
+padding:14px;
+border-radius:10px;
+margin:10px 0;
+cursor:pointer;
+text-align:center;
+}
+
+.user{
+margin-top:10px;
+font-size:14px;
+color:#aaa;
 }
 
 </style>
@@ -107,144 +98,46 @@ display:block;
 
 <div class="sidebar" id="sidebar">
 
-<h2>ZELTRAMARKET</h2>
-
 <a onclick="showPage('home')">🏠 Accueil</a>
 
-<a onclick="showPage('predictions')">📊 Pronostiques</a>
+<a onclick="showPage('pronostics')">📊 Pronostics</a>
 
 <a onclick="showPage('buy')">💰 Acheter du ZELTRA</a>
 
-<a onclick="showPage('ideas')">💡 Donner une idée de pari</a>
+<a onclick="showPage('idea')">💡 Proposer un pari</a>
 
-<a onclick="showPage('contact')">✉️ Nous contacter</a>
+<a onclick="showPage('contact')">✉️ Contact</a>
 
 </div>
 
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
 <header>
 
-<div class="menu-btn" onclick="toggleMenu()">☰</div>
+<div class="menu" onclick="toggleMenu()">☰</div>
 
-<h1>ZELTRAMARKET</h1>
+<div class="title">ZELTRAMARKET</div>
 
 </header>
 
-<div class="container">
-
-<!-- HOME -->
-
-<div id="home">
+<div class="container" id="content">
 
 <h2>Bienvenue</h2>
 
-<p>
+<p>ZeltraMarket est la première plateforme française de pronostics sur des faits réels et quotidiens.</p>
 
-ZeltraMarket est la première plateforme française de pronostics sur des faits réels.
-
-</p>
-
-<p>
-
-Pariez sur :
-
-</p>
+<p>Pariez sur :</p>
 
 <ul>
-
 <li>Sport</li>
 <li>Politique</li>
 <li>Web</li>
 <li>Crypto</li>
 <li>Actualités</li>
 <li>Gaming</li>
-
 </ul>
 
-<p>
+<p>Toutes les mises sont réalisées avec le jeton <b>ZELTRA</b>.</p>
 
-Toutes les mises sont réalisées avec le jeton <b>ZELTRA</b>.
-
-</p>
-
-</div>
-
-<!-- PREDICTIONS -->
-
-<div id="predictions" style="display:none">
-
-<h2>Catégories</h2>
-
-<div class="categories">
-
-<button>⚽ Sport</button>
-
-<button>🏛 Politique</button>
-
-<button>🌐 Web</button>
-
-<button>₿ Crypto</button>
-
-<button>📰 Actualités</button>
-
-<button>🎮 Gaming</button>
-
-</div>
-
-</div>
-
-<!-- BUY -->
-
-<div id="buy" style="display:none">
-
-<h2>Acheter du ZELTRA</h2>
-
-<p>
-
-Le jeton ZELTRA permet de placer des paris sur la plateforme.
-
-</p>
-
-<button>Connecter un wallet</button>
-
-</div>
-
-<!-- IDEAS -->
-
-<div id="ideas" style="display:none">
-
-<h2>Proposer un pari</h2>
-
-<p>
-
-Une idée de pronostic ? Propose-la à la communauté.
-
-</p>
-
-<textarea style="width:100%;height:120px;background:#1c1c1c;color:white;border:none;padding:10px;"></textarea>
-
-<br><br>
-
-<button>Envoyer</button>
-
-</div>
-
-<!-- CONTACT -->
-
-<div id="contact" style="display:none">
-
-<h2>Contact</h2>
-
-<p>
-
-Pour toute question ou partenariat.
-
-</p>
-
-<button>Contacter l'équipe</button>
-
-</div>
+<div id="userInfo" class="user"></div>
 
 </div>
 
@@ -254,29 +147,94 @@ const tg = window.Telegram.WebApp;
 
 tg.expand();
 
-function toggleMenu(){
+/* connexion automatique Telegram */
 
-const sidebar=document.getElementById("sidebar");
-const overlay=document.getElementById("overlay");
+const user = tg.initDataUnsafe.user;
 
-sidebar.classList.toggle("open");
-overlay.classList.toggle("show");
+if(user){
+
+document.getElementById("userInfo").innerHTML =
+"Connecté en tant que : " + user.first_name;
+
+console.log("Utilisateur Telegram :", user);
 
 }
 
+/* menu */
+
+function toggleMenu(){
+
+const sidebar = document.getElementById("sidebar");
+
+sidebar.classList.toggle("open");
+
+}
+
+/* navigation */
+
 function showPage(page){
 
-const pages=["home","predictions","buy","ideas","contact"];
-
-pages.forEach(p=>{
-
-document.getElementById(p).style.display="none";
-
-});
-
-document.getElementById(page).style.display="block";
+const content = document.getElementById("content");
 
 toggleMenu();
+
+if(page === "home"){
+
+content.innerHTML = `
+<h2>Bienvenue</h2>
+<p>ZeltraMarket est la première plateforme française de pronostics.</p>
+<p>Toutes les mises utilisent le jeton <b>ZELTRA</b>.</p>
+`;
+
+}
+
+if(page === "pronostics"){
+
+content.innerHTML = `
+<h2>Catégories</h2>
+
+<div class="category">⚽ Sport</div>
+<div class="category">🏛 Politique</div>
+<div class="category">🌐 Web</div>
+<div class="category">₿ Crypto</div>
+<div class="category">📰 Actualités</div>
+<div class="category">🎮 Gaming</div>
+`;
+
+}
+
+if(page === "buy"){
+
+content.innerHTML = `
+<h2>Acheter du ZELTRA</h2>
+<div class="card">
+Bientôt disponible.
+</div>
+`;
+
+}
+
+if(page === "idea"){
+
+content.innerHTML = `
+<h2>Proposer un pari</h2>
+<div class="card">
+Envoyez vos idées de paris à l'équipe Zeltra.
+</div>
+`;
+
+}
+
+if(page === "contact"){
+
+content.innerHTML = `
+<h2>Contact</h2>
+<div class="card">
+Telegram : @zeltramarket
+</div>
+`;
+
+}
 
 }
 
