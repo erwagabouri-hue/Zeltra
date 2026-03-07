@@ -14,7 +14,7 @@
 
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial;
 background:#000;
 color:white;
 }
@@ -46,93 +46,78 @@ height:100%;
 background:#111;
 padding:20px;
 transition:0.3s;
-z-index:1000;
 }
 
 .sidebar a{
 display:block;
 padding:14px;
-margin:12px 0;
+margin:10px 0;
 background:#1a1a1a;
 border-radius:10px;
-text-decoration:none;
 color:white;
-font-size:15px;
+text-decoration:none;
 }
 
 .sidebar.open{
 left:0;
 }
 
-.logo{
-width:350px;
-opacity:0.07;
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-pointer-events:none;
-z-index:0;
-}
-
 .container{
-
-min-height:calc(100vh - 60px);
-
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-
-text-align:center;
-
-padding:40px 20px;
-max-width:600px;
+padding:30px;
+max-width:700px;
 margin:auto;
-
-position:relative;
-z-index:1;
-
+text-align:center;
 }
 
-h1{
-font-size:34px;
-margin-bottom:10px;
-}
-
-p{
-opacity:0.85;
-line-height:1.6;
-max-width:500px;
-}
-
-.category{
+.category-btn{
 background:#1f1f1f;
 padding:14px;
 border-radius:10px;
 margin:10px 0;
-width:100%;
+cursor:pointer;
+}
+
+.bet-card{
+background:#151515;
+padding:20px;
+border-radius:12px;
+margin:20px 0;
+}
+
+.bet-title{
+margin-bottom:10px;
+}
+
+.bet-actions{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
 }
 
 button{
-background:#28a745;
+padding:10px 16px;
 border:none;
-padding:12px 22px;
-border-radius:10px;
-color:white;
-font-size:16px;
+border-radius:8px;
 cursor:pointer;
-margin-top:15px;
 }
 
-textarea{
-width:100%;
-height:120px;
-border-radius:10px;
+.yes{
+background:#28a745;
+color:white;
+}
+
+.no{
+background:#d93b3b;
+color:white;
+}
+
+input{
+width:80px;
+padding:8px;
+border-radius:6px;
 border:none;
-padding:12px;
-margin-top:15px;
-font-size:15px;
+text-align:center;
 }
 
 </style>
@@ -143,11 +128,13 @@ font-size:15px;
 
 <div class="sidebar" id="sidebar">
 
-<a onclick="showPage('home')">🏠 Accueil</a>
-<a onclick="showPage('pronostics')">📊 Pronostics</a>
-<a onclick="showPage('buy')">💰 Acheter du ZELTRA</a>
-<a onclick="showPage('idea')">💡 Proposer un pari</a>
-<a onclick="showPage('contact')">📩 Contact</a>
+<a onclick="showPage('home')">Accueil</a>
+<a onclick="showPage('sport')">Sport</a>
+<a onclick="showPage('crypto')">Crypto</a>
+<a onclick="showPage('politique')">Politique</a>
+<a onclick="showPage('web')">Web</a>
+<a onclick="showPage('actu')">Actualités</a>
+<a onclick="showPage('gaming')">Gaming</a>
 
 </div>
 
@@ -158,26 +145,12 @@ font-size:15px;
 
 </header>
 
-<img src="logo.png" class="logo">
-
 <div class="container" id="content">
 
 <h1>Bienvenue sur ZELTRAMARKET</h1>
 
 <p>
 La première plateforme française de pronostics sur des événements réels.
-</p>
-
-<p>
-Sport • Crypto • Politique • Web • Actualités • Gaming
-</p>
-
-<p>
-Anticipez l'avenir et testez votre intuition.
-</p>
-
-<p style="opacity:0.6">
-Connecté avec Telegram
 </p>
 
 </div>
@@ -189,114 +162,150 @@ tg.expand();
 
 function toggleMenu(){
 
-const sidebar = document.getElementById("sidebar");
+const sidebar=document.getElementById("sidebar");
 sidebar.classList.toggle("open");
+
+}
+
+function betHTML(question){
+
+return `
+<div class="bet-card">
+
+<div class="bet-title">${question}</div>
+
+<div class="bet-actions">
+
+<button class="yes">OUI</button>
+<button class="no">NON</button>
+
+<input type="number" placeholder="ZELTRA">
+
+</div>
+
+</div>
+`;
 
 }
 
 function showPage(page){
 
-const content = document.getElementById("content");
-
 toggleMenu();
 
-if(page === "home"){
+let html="";
 
-content.innerHTML = `
+if(page==="home"){
 
-<h1>Bienvenue sur ZELTRAMARKET</h1>
-
-<p>
-La première plateforme française de pronostics sur des événements réels.
-</p>
-
-<p>
-Sport • Crypto • Politique • Web • Actualités • Gaming
-</p>
-
-<p>
-Testez votre intuition et gagnez des ZELTRA.
-</p>
-
+html=`
+<h1>ZELTRAMARKET</h1>
+<p>Choisissez une catégorie pour commencer à pronostiquer.</p>
 `;
 
 }
 
-if(page === "pronostics"){
+if(page==="sport"){
 
-content.innerHTML = `
+html="<h2>Sport</h2>";
 
-<h2>Catégories</h2>
-
-<div class="category">⚽ Sport</div>
-<div class="category">🏛 Politique</div>
-<div class="category">🌐 Web</div>
-<div class="category">₿ Crypto</div>
-<div class="category">📰 Actualités</div>
-<div class="category">🎮 Gaming</div>
-
-`;
-
-}
-
-if(page === "buy"){
-
-content.innerHTML = `
-
-<h2>Acheter du ZELTRA</h2>
-
-<p>
-Fonctionnalité bientôt disponible.
-</p>
-
-`;
+html+=betHTML("Le PSG gagnera-t-il la Ligue des Champions avant 2027 ?");
+html+=betHTML("Mbappé gagnera-t-il le Ballon d'Or avant 2027 ?");
+html+=betHTML("La France gagnera-t-elle la Coupe du Monde 2026 ?");
+html+=betHTML("Haaland marquera-t-il 50 buts en une saison avant 2027 ?");
+html+=betHTML("Le Real Madrid gagnera-t-il la Ligue des Champions avant 2027 ?");
+html+=betHTML("Un club français gagnera-t-il une coupe européenne avant 2027 ?");
+html+=betHTML("Un joueur dépassera-t-il 60 buts en une saison avant 2027 ?");
+html+=betHTML("Un transfert dépassera-t-il 250M€ avant 2027 ?");
+html+=betHTML("Un club anglais gagnera-t-il deux LDC avant 2027 ?");
+html+=betHTML("La France gagnera-t-elle l'Euro 2028 ?");
 
 }
 
-if(page === "idea"){
+if(page==="crypto"){
 
-content.innerHTML = `
+html="<h2>Crypto</h2>";
 
-<h2>Proposer un pari</h2>
-
-<p>
-Vous avez une idée de pronostic ? Envoyez-la à notre équipe.
-</p>
-
-<textarea id="ideaText" placeholder="Votre idée de pari..."></textarea>
-
-<button onclick="sendIdea()">Envoyer</button>
-
-`;
-
-}
-
-if(page === "contact"){
-
-content.innerHTML = `
-
-<h2>Contact</h2>
-
-<p>Suivez-nous sur Instagram</p>
-
-<a href="https://www.instagram.com/la_prediction777" target="_blank">
-
-<button>Instagram</button>
-
-</a>
-
-`;
+html+=betHTML("Bitcoin dépassera-t-il 100000$ avant 2027 ?");
+html+=betHTML("Ethereum dépassera-t-il 8000$ avant 2027 ?");
+html+=betHTML("Le marché crypto dépassera-t-il 5 trillions$ avant 2027 ?");
+html+=betHTML("Solana dépassera-t-il 500$ avant 2027 ?");
+html+=betHTML("Bitcoin dépassera-t-il 150000$ avant 2027 ?");
+html+=betHTML("Une crypto dépassera-t-elle 2T$ de market cap ?");
+html+=betHTML("Un pays du G20 adoptera-t-il Bitcoin ?");
+html+=betHTML("Une crypto IA entrera-t-elle dans le top 5 ?");
+html+=betHTML("Ethereum dépassera-t-il Bitcoin ?");
+html+=betHTML("Une banque lancera-t-elle un stablecoin ?");
 
 }
 
+if(page==="politique"){
+
+html="<h2>Politique</h2>";
+
+html+=betHTML("Trump gagnera-t-il l'élection américaine ?");
+html+=betHTML("L'Ukraine rejoindra-t-elle l'UE avant 2027 ?");
+html+=betHTML("Un nouveau pays rejoindra-t-il l'UE ?");
+html+=betHTML("La France changera-t-elle de Premier ministre ?");
+html+=betHTML("Un président de moins de 40 ans sera-t-il élu ?");
+html+=betHTML("Un pays quittera-t-il l'Union Européenne ?");
+html+=betHTML("L'OTAN comptera-t-elle plus de 35 pays ?");
+html+=betHTML("Une crise financière mondiale avant 2027 ?");
+html+=betHTML("Une monnaie numérique d'Etat dans le G7 ?");
+html+=betHTML("Un nouveau parti gagnera-t-il une élection ?");
+
 }
 
-function sendIdea(){
+if(page==="web"){
 
-const idea = document.getElementById("ideaText").value;
+html="<h2>Web / Tech</h2>";
 
-window.location.href =
-"mailto:egabouri@gmail.com?subject=Idee%20pari%20ZELTRA&body="+encodeURIComponent(idea);
+html+=betHTML("Une IA dépassera-t-elle 1 milliard d'utilisateurs ?");
+html+=betHTML("TikTok restera-t-il l'app n°1 ?");
+html+=betHTML("Apple lancera-t-il un iPhone pliable ?");
+html+=betHTML("Une IA remplacera-t-elle Google ?");
+html+=betHTML("Une startup IA vaudra-t-elle 500B$ ?");
+html+=betHTML("Meta lancera-t-il un nouveau réseau social ?");
+html+=betHTML("Une IA écrira-t-elle un best-seller ?");
+html+=betHTML("Une IA sera-t-elle utilisée par un gouvernement ?");
+html+=betHTML("Un casque VR dépassera 100M utilisateurs ?");
+html+=betHTML("Une IA deviendra plus utilisée que Google ?");
+
+}
+
+if(page==="actu"){
+
+html="<h2>Actualités</h2>";
+
+html+=betHTML("Une mission habitée ira autour de la Lune ?");
+html+=betHTML("Une IA gagnera un prix Nobel ?");
+html+=betHTML("Une ville flottante sera construite ?");
+html+=betHTML("Un vaccin révolutionnaire contre le cancer ?");
+html+=betHTML("Un pays interdira les voitures thermiques ?");
+html+=betHTML("Une mission découvrira de la vie ?");
+html+=betHTML("Un robot humanoïde sera vendu ?");
+html+=betHTML("Un avion supersonique commercial ?");
+html+=betHTML("Une nouvelle pandémie mondiale ?");
+html+=betHTML("Une entreprise dépassera 5T$ ?");
+
+}
+
+if(page==="gaming"){
+
+html="<h2>Gaming</h2>";
+
+html+=betHTML("GTA 6 deviendra le jeu le plus vendu ?");
+html+=betHTML("Fortnite dépassera 600M joueurs ?");
+html+=betHTML("Un jeu dépassera 500M joueurs ?");
+html+=betHTML("L'esport deviendra olympique ?");
+html+=betHTML("Un streamer dépassera 200M abonnés ?");
+html+=betHTML("Minecraft restera le jeu le plus vendu ?");
+html+=betHTML("Roblox dépassera 500M utilisateurs ?");
+html+=betHTML("Un jeu VR dépassera 50M joueurs ?");
+html+=betHTML("Un jeu IA deviendra viral ?");
+html+=betHTML("GTA 6 fera 2 milliards en 1 semaine ?");
+
+}
+
+document.getElementById("content").innerHTML=html;
 
 }
 
