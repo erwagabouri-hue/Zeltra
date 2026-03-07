@@ -1,0 +1,14 @@
+{
+  "name": "zeltra-bot",
+  "version": "1.0.0",
+  "description": "ZeltraMarket Telegram prediction bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Zeltra",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0"
+  }
+}
