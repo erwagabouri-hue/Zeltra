@@ -15,48 +15,88 @@ body{
 background:#0f0f0f;
 color:white;
 font-family:Arial;
-text-align:center;
-padding:20px;
+margin:0;
+}
+
+header{
+display:flex;
+align-items:center;
+padding:15px;
+background:#111;
+}
+
+.menu-btn{
+font-size:22px;
+cursor:pointer;
+margin-right:15px;
 }
 
 h1{
-margin-top:20px;
+font-size:18px;
+margin:0;
 }
 
-.categories button{
+.container{
+padding:20px;
+}
 
+button{
 background:#1c1c1c;
 color:white;
 border:none;
 padding:12px;
 margin:6px;
 border-radius:8px;
+cursor:pointer;
+}
+
+.categories button{
+display:block;
+width:100%;
+margin-bottom:10px;
+}
+
+/* menu */
+
+.sidebar{
+
+position:fixed;
+top:0;
+left:-260px;
+width:260px;
+height:100%;
+background:#151515;
+padding:20px;
+transition:0.3s;
 
 }
 
-.bet button{
-
-padding:12px 20px;
-border:none;
-border-radius:8px;
-margin:10px;
+.sidebar a{
+display:block;
+color:white;
+text-decoration:none;
+margin:15px 0;
 font-size:16px;
+}
+
+.sidebar.open{
+left:0;
+}
+
+.overlay{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
 
 }
 
-.yes{
-background:#1db954;
-color:white;
-}
-
-.no{
-background:#ff4d4d;
-color:white;
-}
-
-.balance{
-margin-top:30px;
-font-size:20px;
+.overlay.show{
+display:block;
 }
 
 </style>
@@ -65,37 +105,146 @@ font-size:20px;
 
 <body>
 
-<h1>🚀 ZELTRAMARKET</h1>
+<div class="sidebar" id="sidebar">
 
-<h3 id="user"></h3>
+<h2>ZELTRAMARKET</h2>
+
+<a onclick="showPage('home')">🏠 Accueil</a>
+
+<a onclick="showPage('predictions')">📊 Pronostiques</a>
+
+<a onclick="showPage('buy')">💰 Acheter du ZELTRA</a>
+
+<a onclick="showPage('ideas')">💡 Donner une idée de pari</a>
+
+<a onclick="showPage('contact')">✉️ Nous contacter</a>
+
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<header>
+
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<h1>ZELTRAMARKET</h1>
+
+</header>
+
+<div class="container">
+
+<!-- HOME -->
+
+<div id="home">
+
+<h2>Bienvenue</h2>
+
+<p>
+
+ZeltraMarket est la première plateforme française de pronostics sur des faits réels.
+
+</p>
+
+<p>
+
+Pariez sur :
+
+</p>
+
+<ul>
+
+<li>Sport</li>
+<li>Politique</li>
+<li>Web</li>
+<li>Crypto</li>
+<li>Actualités</li>
+<li>Gaming</li>
+
+</ul>
+
+<p>
+
+Toutes les mises sont réalisées avec le jeton <b>ZELTRA</b>.
+
+</p>
+
+</div>
+
+<!-- PREDICTIONS -->
+
+<div id="predictions" style="display:none">
 
 <h2>Catégories</h2>
 
 <div class="categories">
 
 <button>⚽ Sport</button>
-<button>🎬 Divertissement</button>
-<button>🌐 Web</button>
+
 <button>🏛 Politique</button>
+
+<button>🌐 Web</button>
+
+<button>₿ Crypto</button>
+
+<button>📰 Actualités</button>
+
 <button>🎮 Gaming</button>
 
 </div>
 
-<h2>Pronostic</h2>
+</div>
 
-<p>Bitcoin dépassera-t-il 100k avant 2027 ?</p>
+<!-- BUY -->
 
-<div class="bet">
+<div id="buy" style="display:none">
 
-<button class="yes">OUI</button>
+<h2>Acheter du ZELTRA</h2>
 
-<button class="no">NON</button>
+<p>
+
+Le jeton ZELTRA permet de placer des paris sur la plateforme.
+
+</p>
+
+<button>Connecter un wallet</button>
 
 </div>
 
-<div class="balance">
+<!-- IDEAS -->
 
-💰 Solde ZELTRA : <span id="balance">0</span>
+<div id="ideas" style="display:none">
+
+<h2>Proposer un pari</h2>
+
+<p>
+
+Une idée de pronostic ? Propose-la à la communauté.
+
+</p>
+
+<textarea style="width:100%;height:120px;background:#1c1c1c;color:white;border:none;padding:10px;"></textarea>
+
+<br><br>
+
+<button>Envoyer</button>
+
+</div>
+
+<!-- CONTACT -->
+
+<div id="contact" style="display:none">
+
+<h2>Contact</h2>
+
+<p>
+
+Pour toute question ou partenariat.
+
+</p>
+
+<button>Contacter l'équipe</button>
+
+</div>
 
 </div>
 
@@ -105,14 +254,29 @@ const tg = window.Telegram.WebApp;
 
 tg.expand();
 
-const user = tg.initDataUnsafe.user;
+function toggleMenu(){
 
-if(user){
+const sidebar=document.getElementById("sidebar");
+const overlay=document.getElementById("overlay");
 
-document.getElementById("user").innerHTML =
-"👤 "+user.first_name+" (@"+user.username+")";
+sidebar.classList.toggle("open");
+overlay.classList.toggle("show");
 
-console.log("Utilisateur Telegram :", user);
+}
+
+function showPage(page){
+
+const pages=["home","predictions","buy","ideas","contact"];
+
+pages.forEach(p=>{
+
+document.getElementById(p).style.display="none";
+
+});
+
+document.getElementById(page).style.display="block";
+
+toggleMenu();
 
 }
 
