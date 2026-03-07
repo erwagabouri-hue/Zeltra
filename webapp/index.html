@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>ZeltraMarket</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -11,25 +12,51 @@
 <style>
 
 body{
-background:#0e0e0e;
+background:#0f0f0f;
 color:white;
 font-family:Arial;
 text-align:center;
 padding:20px;
 }
 
-.menu button{
+h1{
+margin-top:20px;
+}
+
+.categories button{
+
+background:#1c1c1c;
+color:white;
+border:none;
 padding:12px;
 margin:6px;
-font-size:16px;
+border-radius:8px;
+
+}
+
+.bet button{
+
+padding:12px 20px;
 border:none;
 border-radius:8px;
-background:#2ecc71;
+margin:10px;
+font-size:16px;
+
+}
+
+.yes{
+background:#1db954;
 color:white;
 }
 
-.section{
-margin-top:25px;
+.no{
+background:#ff4d4d;
+color:white;
+}
+
+.balance{
+margin-top:30px;
+font-size:20px;
 }
 
 </style>
@@ -40,18 +67,11 @@ margin-top:25px;
 
 <h1>🚀 ZELTRAMARKET</h1>
 
-<div class="menu">
-
-<button onclick="show('categories')">📊 Pronostics</button>
-
-<button onclick="show('balance')">💰 Mon solde</button>
-
-</div>
-
-
-<div id="categories" class="section" style="display:none;">
+<h3 id="user"></h3>
 
 <h2>Catégories</h2>
+
+<div class="categories">
 
 <button>⚽ Sport</button>
 <button>🎬 Divertissement</button>
@@ -61,24 +81,38 @@ margin-top:25px;
 
 </div>
 
+<h2>Pronostic</h2>
 
-<div id="balance" class="section" style="display:none;">
+<p>Bitcoin dépassera-t-il 100k avant 2027 ?</p>
 
-<h2>💰 Solde ZELTRA</h2>
+<div class="bet">
 
-<p>Votre solde : 0 ZELTRA</p>
+<button class="yes">OUI</button>
+
+<button class="no">NON</button>
 
 </div>
 
+<div class="balance">
+
+💰 Solde ZELTRA : <span id="balance">0</span>
+
+</div>
 
 <script>
 
-function show(section){
+const tg = window.Telegram.WebApp;
 
-document.getElementById("categories").style.display="none";
-document.getElementById("balance").style.display="none";
+tg.expand();
 
-document.getElementById(section).style.display="block";
+const user = tg.initDataUnsafe.user;
+
+if(user){
+
+document.getElementById("user").innerHTML =
+"👤 "+user.first_name+" (@"+user.username+")";
+
+console.log("Utilisateur Telegram :", user);
 
 }
 
