@@ -1,0 +1,3 @@
+listen-address  127.0.0.1:9052
+forward-socks5t   /               127.0.0.1:9050 .
+toggle  1
